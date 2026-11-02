@@ -1,0 +1,264 @@
+[
+  {
+    "slug": "age-gap-emotion-recognition",
+    "title": "Age Bias in Emotion AI",
+    "shortDescription": "Why multimodal emotion models read older faces worse, traced to the visual channel with a reconstruction-controlled counterfactual probe.",
+    "longDescription": "Emotion recognition models lose accuracy as the speaker gets older. This project measures how much, finds which modality the loss comes from, and tests whether facial appearance alone can explain it.",
+    "challenge": "An accuracy drop on older speakers could come from the audio, the transcript, or the face, and a plain correlation can't say which. Aging also changes appearance and expression together, so the two are hard to pull apart.",
+    "solution": "Benchmarked 7 LLMs from 0.5B to 14B parameters across 20+ configurations, ran per-modality ablations, and built a reconstruction-controlled counterfactual probe that changes apparent age while holding expression fixed. The pipeline covers OpenFace and HuBERT feature extraction, Whisper transcription, and zero-shot Qwen2.5-Omni evaluation over 8,700+ clips.",
+    "outcome": "Accuracy falls about 2.3 points per decade of age (p < 0.005), and the drop sits in the visual channel. Appearance accounts for 31 to 63% of the gap, with predictions shifting toward disgust by 18.4 points. A paper on the probe is in preparation.",
+    "coverImage": "/grid.svg",
+    "images": [],
+    "tags": [
+      "Research"
+    ],
+    "tech": [
+      "PyTorch",
+      "Qwen2.5-Omni",
+      "OpenFace",
+      "HuBERT",
+      "Whisper"
+    ],
+    "role": "Research Assistant, supervised by Dr. Aijun An",
+    "timeline": "2026",
+    "metrics": [
+      {
+        "value": "-2.3",
+        "label": "Accuracy pts per decade"
+      },
+      {
+        "value": "31-63%",
+        "label": "Gap explained by appearance"
+      },
+      {
+        "value": "8.7K",
+        "label": "Clips evaluated"
+      }
+    ],
+    "headline": "-2.3",
+    "headlineLabel": "Accuracy points lost per decade of age",
+    "repo": "",
+    "demo": "",
+    "featured": true
+  },
+  {
+    "slug": "elderreact-gated-fusion",
+    "title": "Confidence-Gated Fusion",
+    "shortDescription": "Multi-label emotion recognition for older adults on ElderReact, where calibration beat every training-side trick.",
+    "longDescription": "A trimodal (audio, video, text) emotion recognition pipeline transferred to ElderReact, a small multi-label dataset of older adults. The goal was a better macro-F1 without overfitting a few hundred clips.",
+    "challenge": "ElderReact is small and imbalanced, so most of the usual levers overfit. Naive late fusion of the three modalities scored 0.358 macro-F1.",
+    "solution": "Added a self-confidence gate to the fusion layer, tuned per-label decision thresholds, and averaged a 5-seed ensemble. Also tried a ViT encoder, CREMA-D pretraining, mixup, other backbones, a valence auxiliary loss, and ASL. None of those beat the baseline, and the ASR text channel hurt at this data scale. A projector-only variant with 0.25% trainable parameters matched LoRA on CREMA-D.",
+    "outcome": "Macro-F1 rose from 0.358 to 0.434, a 21% relative gain. Threshold calibration added 3.4 points, the gate 2.5, and the ensemble 1.7.",
+    "coverImage": "/grid.svg",
+    "images": [],
+    "tags": [
+      "ML"
+    ],
+    "tech": [
+      "PyTorch",
+      "LoRA",
+      "HuBERT",
+      "OpenFace"
+    ],
+    "role": "Research Assistant, supervised by Dr. Aijun An",
+    "timeline": "2026",
+    "metrics": [
+      {
+        "value": "0.434",
+        "label": "Macro-F1 (from 0.358)"
+      },
+      {
+        "value": "+21%",
+        "label": "Relative gain"
+      },
+      {
+        "value": "0.25%",
+        "label": "Trainable params, projector-only"
+      }
+    ],
+    "headline": "+7.6",
+    "headlineLabel": "Macro-F1 points over naive fusion",
+    "repo": "",
+    "demo": "",
+    "featured": true
+  },
+  {
+    "slug": "sip-document-generator",
+    "title": "SIP Document Generator",
+    "shortDescription": "An LLM agent that drafts SIP documents from internal sources, built during my TD co-op and presented at TD Innovation Week.",
+    "longDescription": "An agentic document generation tool built with LangGraph and Azure OpenAI that retrieves from internal material and drafts structured SIP documents for the team.",
+    "challenge": "Writing these documents by hand meant gathering details from scattered sources and repeating the same structure every time.",
+    "solution": "A LangGraph workflow that retrieves relevant context from a FAISS index, drafts each section with Azure OpenAI, and assembles the result in the expected format.",
+    "outcome": "Presented the tool at TD Innovation Week.",
+    "coverImage": "/grid.svg",
+    "images": [],
+    "tags": [
+      "LLMs"
+    ],
+    "tech": [
+      "LangGraph",
+      "Azure OpenAI",
+      "FAISS",
+      "Python"
+    ],
+    "role": "Software Engineer Co-op, TD Bank",
+    "timeline": "TD co-op",
+    "metrics": [],
+    "headline": "RAG",
+    "headlineLabel": "Presented at TD Innovation Week",
+    "repo": "",
+    "demo": "",
+    "featured": true
+  },
+  {
+    "slug": "sentiment-analysis-dashboard",
+    "title": "Reddit Sentiment Dashboard",
+    "shortDescription": "Scrapes Reddit on a topic and compares VADER, TextBlob, and BERT on the same posts, with emotion classification and live charts.",
+    "longDescription": "My EECS 4080 NLP capstone with Dr. Aijun An. A web tool that pulls Reddit posts on polarizing topics and compares how three sentiment models read them.",
+    "challenge": "Different sentiment models disagree on the same post, and a single score hides that.",
+    "solution": "Scraped posts with PRAW, ran VADER, TextBlob, and BERT side by side with emotion classification, and stored results with session tracking and duplicate prevention. A Flask API serves a React and Material-UI dashboard with cross-model comparisons.",
+    "outcome": "The capstone became the starting point for my multimodal emotion recognition research.",
+    "coverImage": "/grid.svg",
+    "images": [],
+    "tags": [
+      "NLP"
+    ],
+    "tech": [
+      "Python",
+      "Flask",
+      "BERT",
+      "React",
+      "PostgreSQL"
+    ],
+    "role": "Capstone, supervised by Dr. Aijun An",
+    "timeline": "2025",
+    "metrics": [
+      {
+        "value": "3",
+        "label": "Models compared"
+      },
+      {
+        "value": "6+",
+        "label": "Chart types"
+      }
+    ],
+    "headline": "3",
+    "headlineLabel": "Sentiment models, one post",
+    "repo": "https://github.com/manjrekAdi/Sentimental-Analysis-Dashboard",
+    "demo": "",
+    "featured": true
+  },
+  {
+    "slug": "ev-ecommerce-platform",
+    "title": "EV E-Commerce Platform",
+    "shortDescription": "Full-stack store for electric vehicles with browsing, comparison, cart, reviews, and an admin view. Deployed on Render.",
+    "longDescription": "Group project for EECS 4413. Customers browse, compare, and buy electric vehicles, and administrators track sales and usage.",
+    "challenge": "Build a working store with real accounts, roles, and persistence, then keep it running online.",
+    "solution": "Spring Boot 3 REST API on Java 17 with PostgreSQL, a React 18 frontend, role-based access for customers and admins, and a 5-star review system.",
+    "outcome": "Deployed and live on Render.",
+    "coverImage": "/grid.svg",
+    "images": [],
+    "tags": [
+      "Full stack"
+    ],
+    "tech": [
+      "Spring Boot",
+      "React",
+      "PostgreSQL",
+      "Java"
+    ],
+    "role": "Developer, team project",
+    "timeline": "2025",
+    "metrics": [],
+    "headline": "Live",
+    "headlineLabel": "Deployed on Render",
+    "repo": "https://github.com/manjrekAdi/4413-Project-Group-D",
+    "demo": "https://four413-project-group-d-7.onrender.com/",
+    "featured": true
+  },
+  {
+    "slug": "connect2talents-infrastructure",
+    "title": "Connect2Talents Infrastructure",
+    "shortDescription": "AWS setup for SGMC Canada's talent platform through Riipen: domains, authenticated email, storage, and access control.",
+    "longDescription": "Infrastructure work for the Connect2Talents platform, done with SGMC Canada through Riipen alongside two teammates.",
+    "challenge": "The platform needed a domain, email that lands in inboxes rather than spam, file storage, and sensible permissions.",
+    "solution": "Configured Route 53 for connect2talents.ca, SES with DKIM and DMARC, S3 storage, and IAM roles and policies.",
+    "outcome": "Domain, email, storage, and access in place for the platform build.",
+    "coverImage": "/grid.svg",
+    "images": [],
+    "tags": [
+      "Cloud"
+    ],
+    "tech": [
+      "AWS",
+      "Route 53",
+      "SES",
+      "S3",
+      "IAM"
+    ],
+    "role": "Developer, SGMC Canada via Riipen",
+    "timeline": "2026",
+    "metrics": [],
+    "headline": "AWS",
+    "headlineLabel": "Route 53 · SES · S3 · IAM",
+    "repo": "",
+    "demo": "",
+    "featured": false
+  },
+  {
+    "slug": "wikipedia-bridge-articles",
+    "title": "Bridge Articles in Wikipedia",
+    "shortDescription": "Finding the articles that connect otherwise separate communities in the Wikipedia knowledge graph.",
+    "longDescription": "EECS 4414 (Information Networks) team project on the articles that link distinct topic communities in Wikipedia.",
+    "challenge": "Most links in Wikipedia stay inside a topic. The few that cross between communities are hard to find by inspection.",
+    "solution": "Applied community detection and spectral clustering to the link graph, then looked at link prediction and network models to characterize the bridges.",
+    "outcome": "Final presentation and ACM-format reports.",
+    "coverImage": "/grid.svg",
+    "images": [],
+    "tags": [
+      "Graphs"
+    ],
+    "tech": [
+      "Python",
+      "Community detection",
+      "Spectral clustering",
+      "Link prediction"
+    ],
+    "role": "Team project",
+    "timeline": "2026",
+    "metrics": [],
+    "headline": "Graph",
+    "headlineLabel": "Community detection",
+    "repo": "",
+    "demo": "",
+    "featured": false
+  },
+  {
+    "slug": "online-banking-system",
+    "title": "Online Banking System",
+    "shortDescription": "Banking platform with accounts, transactions, and loans. I led the Angular frontend on a Spring Boot and MySQL backend.",
+    "longDescription": "EECS 3311 team project: a banking platform covering account management, transactions, and loan services.",
+    "challenge": "Keep customer operations and login secure while the frontend and backend were built in parallel by different people.",
+    "solution": "Led frontend development in Angular against a Spring Boot REST API with MySQL, and built the customer operation and secure login modules.",
+    "outcome": "A working platform covering accounts, transactions, and loans.",
+    "coverImage": "/grid.svg",
+    "images": [],
+    "tags": [
+      "Full stack"
+    ],
+    "tech": [
+      "Angular",
+      "Spring Boot",
+      "MySQL",
+      "Java"
+    ],
+    "role": "Frontend lead, team project",
+    "timeline": "2024",
+    "metrics": [],
+    "headline": "Java",
+    "headlineLabel": "Spring Boot · Angular",
+    "repo": "https://github.com/EECS3311F24/project-banking-system",
+    "demo": "",
+    "featured": false
+  }
+]

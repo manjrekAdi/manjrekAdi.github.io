@@ -1,0 +1,35 @@
+{
+  "name": "Aditya Manjrekar",
+  "firstName": "Aditya",
+  "logo": "ADITYA",
+  "title": "Multimodal ML Research",
+  "shortBio": "MSc Computer Science student at York University researching how multimodal models fail and how to measure it. Previously eight months of production engineering at TD Bank.",
+  "longBio": "My research looks at where multimodal models break: why an emotion model reads older faces worse, how retrieval systems lose track of their evidence, and when a model should decline to answer. Before research I spent eight months at TD Bank on deployment pipelines, credential security, and an LLM document tool, so I care about results that survive outside a notebook.",
+  "location": "Toronto, Canada",
+  "email": "manjrekadi05@gmail.com",
+  "timezone": "America/Toronto",
+  "siteUrl": "https://manjrekadi.github.io",
+  "portrait": "",
+  "resume": "",
+  "status": "MSc research at York",
+  "statusShort": "MSc @ York",
+  "heroTaglines": ["Multimodal ML", "Reliable AI", "Research"],
+  "badges": ["PyTorch", "Python", "RAG", "Evaluation"],
+  "social": {
+    "github": "https://github.com/manjrekAdi",
+    "githubHandle": "@manjrekAdi",
+    "linkedin": "https://www.linkedin.com/in/aditya-manjrekar-213b56275/",
+    "linkedinHandle": "in/aditya-manjrekar",
+    "twitter": "",
+    "medium": ""
+  },
+  "theme": {
+    "primaryColor": "#2f6fff",
+    "accentColor": "#5b8dff"
+  },
+  "stats": [
+    { "value": "7", "suffix": "", "label": "LLMs benchmarked, 0.5B to 14B" },
+    { "value": "8.7", "suffix": "K", "label": "Clips evaluated zero-shot" },
+    { "value": "8", "suffix": "mo", "label": "Production engineering, TD Bank" }
+  ]
+}

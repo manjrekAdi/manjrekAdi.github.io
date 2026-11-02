@@ -1,0 +1,220 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-anton: 'Anton';
+  --font-manrope: 'Manrope Variable';
+  --font-caveat: 'Caveat';
+  --ink: #090909;
+  --accent: #2f6fff;
+  --accent-deep: #0b2a80;
+  --line: rgba(255, 255, 255, 0.08);
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--ink);
+  color-scheme: dark;
+}
+html.motion-off {
+  scroll-behavior: auto;
+}
+
+body {
+  background-color: var(--ink);
+  /* Subtle film grain, painted into the page rather than a fixed overlay */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  color: #ededed;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Giant PORTFOLIO word behind the hero */
+.hero-word {
+  background: linear-gradient(180deg, #2f6fff 0%, #1d4fd6 40%, rgba(14, 40, 120, 0.55) 75%, rgba(9, 9, 9, 0) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  line-height: 0.82;
+  padding-bottom: 0.06em;
+  letter-spacing: -0.01em;
+}
+
+.portrait-tint {
+  filter: grayscale(0.25) contrast(1.08) brightness(0.92);
+  -webkit-mask-image: linear-gradient(180deg, #000 82%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 82%, transparent 100%);
+}
+
+.accent-dot {
+  display: inline-block;
+  width: 0.18em;
+  height: 0.18em;
+  background: var(--accent);
+  margin-left: 0.04em;
+}
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.marquee-track {
+  animation: marquee 40s linear infinite;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.pulse-dot {
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+html.motion-off .marquee-track,
+html.motion-off .pulse-dot {
+  animation: none;
+}
+
+/* ===================== Cursor build effect ===================== */
+
+/* Hidden until the cursors build it. The reveal itself is a Web Animation,
+   so built elements keep their own transitions and carry no clip path. */
+html.cb-armed [data-build]:not(.is-built) {
+  opacity: 0;
+}
+
+.cb-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 70;
+}
+.cb-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  will-change: transform;
+}
+
+.cb-cursor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+  color: #ffffff;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+}
+.cb-cursor.is-accent {
+  color: var(--accent);
+}
+.cb-cursor.is-dim {
+  color: #8fb0ff;
+}
+
+.cb-tag {
+  position: absolute;
+  left: 15px;
+  top: 18px;
+  white-space: nowrap;
+  font: 700 10px/1 var(--font-manrope), system-ui, sans-serif;
+  letter-spacing: 0.02em;
+  padding: 4px 6px;
+  border-radius: 2px;
+  background: var(--accent);
+  color: #fff;
+}
+.cb-cursor.is-accent .cb-tag {
+  background: #fff;
+  color: #090909;
+}
+.cb-cursor.is-dim .cb-tag {
+  background: #2a2a2a;
+  color: #fff;
+}
+
+.cb-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px dashed rgba(47, 111, 255, 0.9);
+  background: rgba(47, 111, 255, 0.07);
+}
+.cb-box::before,
+.cb-box::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #fff;
+  border: 1px solid var(--accent);
+}
+.cb-box::before {
+  top: -4px;
+  left: -4px;
+}
+.cb-box::after {
+  bottom: -4px;
+  right: -4px;
+}
+
+.cb-plus {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 11px;
+  height: 11px;
+  margin: -5px 0 0 -5px;
+  color: rgba(255, 255, 255, 0.55);
+}
+.cb-plus::before,
+.cb-plus::after {
+  content: '';
+  position: absolute;
+  background: currentColor;
+}
+.cb-plus::before {
+  left: 5px;
+  top: 0;
+  width: 1px;
+  height: 11px;
+}
+.cb-plus::after {
+  top: 5px;
+  left: 0;
+  height: 1px;
+  width: 11px;
+}
+
+.cb-skip {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 80;
+  font: 700 11px/1 var(--font-manrope), system-ui, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(9, 9, 9, 0.8);
+  color: #ededed;
+  backdrop-filter: blur(6px);
+}
+.cb-skip:hover {
+  border-color: var(--accent);
+}
