@@ -76,7 +76,7 @@ export default function Hero() {
           <a
             data-build
             href="#work"
-            className="mt-8 inline-flex items-center gap-6 bg-accent px-5 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-accent-bright"
+            className="mt-8 inline-flex items-center gap-6 bg-accent px-5 py-3.5 text-sm font-semibold text-ink transition-colors hover:bg-accent-bright"
           >
             See my work <ArrowDown className="h-4 w-4" />
           </a>

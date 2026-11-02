@@ -24,8 +24,8 @@
     "medium": ""
   },
   "theme": {
-    "primaryColor": "#2f6fff",
-    "accentColor": "#5b8dff"
+    "primaryColor": "#1fa2ff",
+    "accentColor": "#5cc0ff"
   },
   "stats": [
     { "value": "7", "suffix": "", "label": "LLMs benchmarked, 0.5B to 14B" },

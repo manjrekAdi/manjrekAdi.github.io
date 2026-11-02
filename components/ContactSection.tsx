@@ -29,7 +29,7 @@ export default function ContactSection() {
           <a
             data-build
             href={`mailto:${site.email}`}
-            className="mt-8 inline-flex items-center gap-6 bg-accent px-6 py-4 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-accent-bright"
+            className="mt-8 inline-flex items-center gap-6 bg-accent px-6 py-4 text-sm font-bold uppercase tracking-wider text-ink transition-colors hover:bg-accent-bright"
           >
             Start a conversation <Mail className="h-4 w-4" />
           </a>
@@ -76,16 +76,16 @@ export default function ContactSection() {
             aria-hidden="true"
           />
           <div className="relative flex items-start justify-between">
-            <span className="font-display text-3xl text-white">
+            <span className="font-display text-3xl text-ink">
               {site.logo}<sup className="text-xs">®</sup>
             </span>
-            <span className="text-right text-[10px] font-bold uppercase tracking-wider text-white/80">
+            <span className="text-right text-[10px] font-bold uppercase tracking-wider text-ink/70">
               ML / Research
               <br />
               Multimodal / RAG
             </span>
           </div>
-          <p className="relative font-display text-6xl uppercase leading-[0.9] text-white sm:text-7xl">
+          <p className="relative font-display text-6xl uppercase leading-[0.9] text-ink sm:text-7xl">
             Find the
             <br />
             failure.

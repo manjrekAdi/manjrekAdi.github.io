@@ -119,7 +119,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 href={project.demo}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-6 bg-accent px-5 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-accent-bright"
+                className="inline-flex items-center gap-6 bg-accent px-5 py-3.5 text-sm font-semibold text-ink transition-colors hover:bg-accent-bright"
               >
                 Live site <ArrowUpRight className="h-4 w-4" />
               </a>
