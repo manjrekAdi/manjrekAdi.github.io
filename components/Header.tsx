@@ -50,7 +50,7 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-ink/85 backdrop-blur-md">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-ink/95">
       <div
         className="absolute left-0 top-0 h-[2px] bg-accent transition-[width] duration-150"
         style={{ width: `${progress * 100}%` }}

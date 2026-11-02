@@ -35,12 +35,24 @@ export default function CursorBuild() {
     (window as any).__cbReady = true;
 
     const built = new WeakSet<HTMLElement>();
-    const reveal = (el: HTMLElement, animate = true) => {
+    // 'clip' is the cursor-drag reveal; 'rise' is the quick fade-up used when a block
+    // reaches the screen before any cursor does. 'rise' animates the separate
+    // `translate` property so it never fights an element's own transform.
+    const reveal = (el: HTMLElement, animate = true, style: 'clip' | 'rise' = 'clip') => {
       if (built.has(el)) return;
       built.add(el);
       el.classList.add('is-built');
       el.dispatchEvent(new CustomEvent('built', { bubbles: true }));
-      if (animate && !root.classList.contains('motion-off')) {
+      if (!animate || root.classList.contains('motion-off')) return;
+      if (style === 'rise') {
+        el.animate(
+          [
+            { opacity: 0, translate: '0 22px' },
+            { opacity: 1, translate: '0 0' },
+          ],
+          { duration: 760, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' },
+        );
+      } else {
         el.animate(
           [
             { clipPath: 'inset(0 100% 100% 0)', opacity: 0.2 },
@@ -210,14 +222,46 @@ export default function CursorBuild() {
     skipBtn.onclick = () => {
       skipping = true;
       introTargets.forEach((el) => reveal(el, false));
+      introRunning = false;
       skipBtn.remove();
     };
     document.body.appendChild(skipBtn);
 
-    const introDone = runBatch(introTargets, Math.min(isMobile ? 8 : 16, introTargets.length), isMobile ? 0.75 : 0.9).then(
+    // ---------- Visibility deadline ----------
+    // Cursors are decoration. Once a block is actually on screen it gets a short grace
+    // period for a cursor to arrive, then it rises in by itself.
+    const DEADLINE = 200;
+    const introSet = new Set(introTargets);
+    let introRunning = true;
+    const timers = new Map<HTMLElement, number>();
+    const vis = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          const el = e.target as HTMLElement;
+          if (!e.isIntersecting) {
+            window.clearTimeout(timers.get(el));
+            timers.delete(el);
+            continue;
+          }
+          if (built.has(el) || timers.has(el) || (introRunning && introSet.has(el))) continue;
+          timers.set(
+            el,
+            window.setTimeout(() => {
+              timers.delete(el);
+              if (!killed) reveal(el, true, 'rise');
+            }, DEADLINE),
+          );
+        }
+      },
+      { rootMargin: '0px 0px -4% 0px' },
+    );
+    document.querySelectorAll<HTMLElement>('[data-build]').forEach((el) => vis.observe(el));
+
+    const introDone = runBatch(introTargets, Math.min(isMobile ? 8 : 16, introTargets.length), isMobile ? 0.65 : 0.75).then(
       () => {
         skipBtn.remove();
         skipping = false;
+        introRunning = false;
       },
     );
 
@@ -235,7 +279,7 @@ export default function CursorBuild() {
       const count = Math.min(isMobile ? 5 : 9, Math.max(3, Math.ceil(batch.length / 1.3)));
       runBatch(batch, count, isMobile ? 0.5 : 0.55);
       // Never leave content waiting on cursors for long.
-      window.setTimeout(() => batch.forEach((el) => reveal(el)), 1600);
+      window.setTimeout(() => batch.forEach((el) => reveal(el, true, 'rise')), 1400);
     };
 
     const scan = () => {
@@ -245,15 +289,18 @@ export default function CursorBuild() {
         const r = el.getBoundingClientRect();
         if (r.bottom <= 0) {
           reveal(el, false); // scrolled past already
-        } else if (introFinished && r.top < vhNow * 1.08 && !queued.has(el)) {
+        } else if (introFinished && r.top < vhNow * 1.4 && !queued.has(el)) {
           // Start slightly before it enters, so cursors arrive as it does.
           queued.add(el);
           pending.push(el);
         }
       });
-      if (pending.length) {
-        window.clearTimeout(flushTimer);
-        flushTimer = window.setTimeout(flush, 40);
+      // Throttle, not debounce: continuous (smooth) scrolling must not keep pushing this back.
+      if (pending.length && flushTimer === undefined) {
+        flushTimer = window.setTimeout(() => {
+          flushTimer = undefined;
+          flush();
+        }, 40);
       }
     };
 
@@ -289,6 +336,7 @@ export default function CursorBuild() {
         ),
       );
       if (!added) return;
+      document.querySelectorAll<HTMLElement>('[data-build]:not(.is-built)').forEach((el) => vis.observe(el));
       if (root.classList.contains('motion-off')) revealAll();
       else onScroll();
     });
@@ -306,6 +354,8 @@ export default function CursorBuild() {
 
     return () => {
       killed = true;
+      vis.disconnect();
+      timers.forEach((t) => window.clearTimeout(t));
       mo.disconnect();
       window.removeEventListener('motionchange', onMotion);
       window.removeEventListener('scroll', onScroll);

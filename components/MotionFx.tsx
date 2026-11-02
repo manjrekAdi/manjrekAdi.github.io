@@ -79,10 +79,13 @@ function setup(): () => void {
   const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   const small = window.innerWidth < 768;
 
-  /* ---------- Smooth scrolling (mouse and trackpad only) ---------- */
+  /* ---------- Smooth scrolling (mouse and trackpad only) ----------
+     Driven from the same frame loop as the parallax below, so the scroll position
+     and everything tied to it update in the same frame. */
+  let lenis: Lenis | null = null;
   if (fine) {
-    const lenis = new Lenis({ lerp: 0.1, smoothWheel: true, anchors: true, autoRaf: true });
-    cleanups.push(() => lenis.destroy());
+    lenis = new Lenis({ lerp: 0.12, wheelMultiplier: 0.95, smoothWheel: true, anchors: true, autoRaf: false });
+    cleanups.push(() => lenis?.destroy());
   }
 
   /* ---------- Pointer position, normalised to -1..1 ---------- */
@@ -98,18 +101,41 @@ function setup(): () => void {
   }
 
   /* ---------- Per-frame loop: parallax, heading drift, marquee ---------- */
-  const depth = Array.from(document.querySelectorAll<HTMLElement>('[data-depth]')).map((el) => ({
+  type Depth = { el: HTMLElement; d: number; s: number; mx: number; my: number; last: string };
+  const depth: Depth[] = Array.from(document.querySelectorAll<HTMLElement>('[data-depth]')).map((el) => ({
     el,
     d: parseFloat(el.dataset.depth || '0'),
     s: parseFloat(el.dataset.scroll || '0'),
-    x: 0,
-    y: 0,
+    mx: 0,
+    my: 0,
+    last: '',
   }));
-  const drift = Array.from(document.querySelectorAll<HTMLElement>('[data-drift]')).map((el) => ({
+  type Drift = { el: HTMLElement; lines: HTMLElement[]; top: number; h: number; last: string };
+  const drift: Drift[] = Array.from(document.querySelectorAll<HTMLElement>('[data-drift]')).map((el) => ({
     el,
     lines: Array.from(el.querySelectorAll<HTMLElement>('[data-drift-line]')),
-    x: 0,
+    top: 0,
+    h: 0,
+    last: '',
   }));
+  // Heading positions are measured once (and again when the page resizes), never per frame.
+  const measure = () => {
+    const y = window.scrollY;
+    for (const h of drift) {
+      const prev = h.el.style.transform;
+      h.el.style.transform = '';
+      const r = h.el.getBoundingClientRect();
+      h.el.style.transform = prev;
+      h.top = r.top + y;
+      h.h = r.height;
+    }
+  };
+  measure();
+  document.fonts?.ready.then(measure);
+  const ro = new ResizeObserver(() => measure());
+  ro.observe(document.body);
+  cleanups.push(() => ro.disconnect());
+
   const marqueeAnim = document.querySelector<HTMLElement>('.marquee-track')?.getAnimations()[0];
   const amp = small ? 12 : 30;
   let lastY = window.scrollY;
@@ -117,34 +143,44 @@ function setup(): () => void {
   let rate = 1;
   let raf = 0;
 
-  const frame = () => {
+  const frame = (time: number) => {
+    lenis?.raf(time);
     const y = window.scrollY;
     const vh = window.innerHeight;
-    vel = lerp(vel, y - lastY, 0.25);
+    vel = lerp(vel, y - lastY, 0.3);
     lastY = y;
 
-    if (y < vh * 1.3) {
+    // Hero depth: the mouse part eases, the scroll part tracks the scroll exactly.
+    if (y < vh * 1.4) {
       for (const p of depth) {
-        const tx = fine ? mx * p.d * 22 : 0;
-        const ty = (fine ? my * p.d * 12 : 0) + y * p.s;
-        p.x = lerp(p.x, tx, 0.07);
-        p.y = lerp(p.y, ty, 0.2);
-        p.el.style.transform = `translate3d(${p.x.toFixed(2)}px, ${p.y.toFixed(2)}px, 0)`;
+        p.mx = lerp(p.mx, fine ? mx * p.d * 22 : 0, 0.075);
+        p.my = lerp(p.my, fine ? my * p.d * 12 : 0, 0.075);
+        const t = `translate3d(${p.mx.toFixed(1)}px, ${(p.my + y * p.s).toFixed(1)}px, 0)`;
+        if (t !== p.last) {
+          p.el.style.transform = t;
+          p.last = t;
+        }
       }
     }
 
     for (const h of drift) {
-      const r = h.el.getBoundingClientRect();
-      if (r.bottom < -100 || r.top > vh + 100) continue;
-      const target = clamp((r.top + r.height / 2 - vh / 2) / vh, -1, 1) * amp;
-      h.x = lerp(h.x, target, 0.12);
-      h.el.style.transform = `translate3d(${h.x.toFixed(2)}px, 0, 0)`;
-      for (const line of h.lines) line.style.transform = `translate3d(${(-h.x * 2).toFixed(2)}px, 0, 0)`;
+      const center = h.top + h.h / 2 - y;
+      if (center < -vh || center > vh * 2) continue;
+      const x = clamp((center - vh / 2) / vh, -1, 1) * amp;
+      const t = `translate3d(${x.toFixed(1)}px, 0, 0)`;
+      if (t === h.last) continue;
+      h.last = t;
+      h.el.style.transform = t;
+      const lt = `translate3d(${(-x * 2).toFixed(1)}px, 0, 0)`;
+      for (const line of h.lines) line.style.transform = lt;
     }
 
     if (marqueeAnim) {
-      rate = lerp(rate, 1 + Math.min(Math.abs(vel) * 0.45, 8), 0.06);
-      marqueeAnim.playbackRate = rate;
+      const next = lerp(rate, 1 + Math.min(Math.abs(vel) * 0.45, 8), 0.06);
+      if (Math.abs(next - rate) > 0.01) {
+        rate = next;
+        marqueeAnim.playbackRate = rate;
+      }
     }
 
     raf = requestAnimationFrame(frame);
@@ -183,8 +219,8 @@ function setup(): () => void {
     counts.forEach((el) => stopCounts.push(countUp(el)));
     t.querySelectorAll<HTMLElement>('.cover-bar').forEach((bar, i) => {
       bar.animate([{ transform: 'scaleY(0)' }, { transform: 'scaleY(1)' }], {
-        duration: 1000,
-        delay: 220 + i * 26,
+        duration: 850,
+        delay: 120 + i * 18,
         easing: EASE,
         fill: 'backwards',
       });
