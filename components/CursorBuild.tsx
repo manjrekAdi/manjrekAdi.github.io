@@ -47,10 +47,10 @@ export default function CursorBuild() {
       if (style === 'rise') {
         el.animate(
           [
-            { opacity: 0, translate: '0 22px' },
+            { opacity: 0, translate: '0 44px' },
             { opacity: 1, translate: '0 0' },
           ],
-          { duration: 760, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' },
+          { duration: 1150, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
         );
       } else {
         el.animate(
@@ -58,7 +58,7 @@ export default function CursorBuild() {
             { clipPath: 'inset(0 100% 100% 0)', opacity: 0.2 },
             { clipPath: 'inset(-30px -30px -30px -30px)', opacity: 1 },
           ],
-          { duration: 650, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' },
+          { duration: 900, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
         );
       }
     };
@@ -230,7 +230,18 @@ export default function CursorBuild() {
     // ---------- Visibility deadline ----------
     // Cursors are decoration. Once a block is actually on screen it gets a short grace
     // period for a cursor to arrive, then it rises in by itself.
-    const DEADLINE = 200;
+    const DEADLINE = 380;
+    // Blocks that come due together rise one after another, not all at once.
+    const STAGGER = 110;
+    let nextRise = 0;
+    const riseSoon = (el: HTMLElement) => {
+      const now = performance.now();
+      const at = Math.max(now, nextRise);
+      nextRise = at + STAGGER;
+      window.setTimeout(() => {
+        if (!killed) reveal(el, true, 'rise');
+      }, at - now);
+    };
     const introSet = new Set(introTargets);
     let introRunning = true;
     const timers = new Map<HTMLElement, number>();
@@ -248,12 +259,12 @@ export default function CursorBuild() {
             el,
             window.setTimeout(() => {
               timers.delete(el);
-              if (!killed) reveal(el, true, 'rise');
+              if (!killed && !built.has(el)) riseSoon(el);
             }, DEADLINE),
           );
         }
       },
-      { rootMargin: '0px 0px -4% 0px' },
+      { rootMargin: '0px 0px -12% 0px' },
     );
     document.querySelectorAll<HTMLElement>('[data-build]').forEach((el) => vis.observe(el));
 
@@ -277,9 +288,9 @@ export default function CursorBuild() {
       pending = [];
       if (!batch.length || killed) return;
       const count = Math.min(isMobile ? 5 : 9, Math.max(3, Math.ceil(batch.length / 1.3)));
-      runBatch(batch, count, isMobile ? 0.5 : 0.55);
+      runBatch(batch, count, isMobile ? 0.65 : 0.75);
       // Never leave content waiting on cursors for long.
-      window.setTimeout(() => batch.forEach((el) => reveal(el, true, 'rise')), 1400);
+      window.setTimeout(() => batch.forEach((el) => !built.has(el) && riseSoon(el)), 1500);
     };
 
     const scan = () => {
@@ -289,7 +300,7 @@ export default function CursorBuild() {
         const r = el.getBoundingClientRect();
         if (r.bottom <= 0) {
           reveal(el, false); // scrolled past already
-        } else if (introFinished && r.top < vhNow * 1.4 && !queued.has(el)) {
+        } else if (introFinished && r.top < vhNow * 1.02 && !queued.has(el)) {
           // Start slightly before it enters, so cursors arrive as it does.
           queued.add(el);
           pending.push(el);
