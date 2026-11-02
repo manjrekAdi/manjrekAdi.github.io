@@ -116,6 +116,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <div className="mt-10 flex flex-wrap gap-4">
             {project.demo && (
               <a
+                data-magnetic
                 href={project.demo}
                 target="_blank"
                 rel="noreferrer"
@@ -126,6 +127,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             )}
             {project.repo && (
               <a
+                data-magnetic
                 href={project.repo}
                 target="_blank"
                 rel="noreferrer"

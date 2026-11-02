@@ -19,10 +19,10 @@ export default function RecognitionSection() {
         <div>
           <div data-build>
             <p className="eyebrow text-accent">Milestones</p>
-            <h2 className="mt-3 font-display text-5xl uppercase leading-[0.95] sm:text-7xl">
+            <h2 data-drift className="mt-3 font-display text-5xl uppercase leading-[0.95] sm:text-7xl">
               The research.
               <br />
-              <span className="text-accent">The milestones.</span>
+              <span data-drift-line className="text-accent">The milestones.</span>
             </h2>
           </div>
           <div data-build className="mt-10 flex items-center gap-5">

@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { MoveHorizontal } from 'lucide-react';
 
 /* ElderReact macro-F1, step by step. Real numbers from the experiment log.
@@ -13,7 +13,13 @@ const STEPS = [
 ];
 const BASE = 0.358;
 
-function Ladder({ tuned }: { tuned: boolean }) {
+/* Row i climbs from the baseline once t passes its turn; rows go one after another. */
+const rowProgress = (t: number, i: number) => {
+  const k = Math.min(1, Math.max(0, (t - (i - 1) * 0.22) / 0.5));
+  return 1 - Math.pow(1 - k, 3);
+};
+
+function Ladder({ tuned, t = 1 }: { tuned: boolean; t?: number }) {
   const W = 800;
   const H = 420;
   const left = 250;
@@ -37,7 +43,7 @@ function Ladder({ tuned }: { tuned: boolean }) {
       ))}
       <line x1={x(BASE)} x2={x(BASE)} y1={top - 10} y2={H - 50} stroke="rgba(255,255,255,0.35)" strokeDasharray="6 6" />
       {STEPS.map((st, i) => {
-        const v = tuned ? st.after : BASE;
+        const v = tuned ? BASE + (st.after - BASE) * rowProgress(t, i) : BASE;
         const y = top + i * rowH + rowH * 0.2;
         const h = rowH * 0.6;
         return (
@@ -61,7 +67,40 @@ function Ladder({ tuned }: { tuned: boolean }) {
 
 export default function ProcessSection() {
   const [pos, setPos] = useState(50);
+  const [t, setT] = useState(1);
   const box = useRef<HTMLDivElement>(null);
+  const stage = useRef<HTMLDivElement>(null);
+  const touched = useRef(false);
+
+  // When the chart is revealed: sweep the divider across while the tuned bars climb.
+  useEffect(() => {
+    const el = stage.current;
+    if (!el) return;
+    let raf = 0;
+    const play = () => {
+      if (document.documentElement.classList.contains('motion-off')) return;
+      const start = performance.now() + 250;
+      const D = 2000;
+      setT(0);
+      if (!touched.current) setPos(96);
+      const tick = (now: number) => {
+        const k = Math.min(1, Math.max(0, (now - start) / D));
+        setT(k);
+        if (!touched.current) {
+          const s = Math.min(1, k / 0.75);
+          const e = s < 0.5 ? 4 * s * s * s : 1 - Math.pow(-2 * s + 2, 3) / 2;
+          setPos(96 - 58 * e);
+        }
+        if (k < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    };
+    el.addEventListener('built', play, { once: true });
+    return () => {
+      el.removeEventListener('built', play);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
 
   const setFromX = useCallback((clientX: number) => {
     const r = box.current?.getBoundingClientRect();
@@ -74,10 +113,10 @@ export default function ProcessSection() {
       <div className="grid gap-10 lg:grid-cols-[1fr_2fr] lg:items-end">
         <div data-build>
           <p className="eyebrow text-accent">A look under the model</p>
-          <h2 className="mt-3 font-display text-5xl uppercase leading-[0.95] sm:text-6xl">
+          <h2 data-drift className="mt-3 font-display text-5xl uppercase leading-[0.95] sm:text-6xl">
             Same model.
             <br />
-            <span className="text-accent">Better decisions.</span>
+            <span data-drift-line className="text-accent">Better decisions.</span>
           </h2>
           <p className="mt-6 text-lg font-semibold text-bone">Small data punishes clever training.</p>
           <p className="mt-3 max-w-sm text-sm leading-7 text-bone/65">
@@ -92,11 +131,12 @@ export default function ProcessSection() {
           </p>
         </div>
 
-        <div data-build>
+        <div data-build ref={stage}>
           <div
             ref={box}
             className="relative aspect-[800/420] cursor-ew-resize touch-pan-y select-none overflow-hidden border border-line"
             onPointerDown={(e) => {
+              touched.current = true;
               (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
               setFromX(e.clientX);
             }}
@@ -110,12 +150,13 @@ export default function ProcessSection() {
             aria-valuenow={Math.round(pos)}
             tabIndex={0}
             onKeyDown={(e) => {
+              touched.current = true;
               if (e.key === 'ArrowLeft') setPos((p) => Math.max(0, p - 5));
               if (e.key === 'ArrowRight') setPos((p) => Math.min(100, p + 5));
             }}
           >
             <div className="absolute inset-0">
-              <Ladder tuned />
+              <Ladder tuned t={t} />
             </div>
             <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
               <Ladder tuned={false} />

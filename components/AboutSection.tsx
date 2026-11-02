@@ -32,10 +32,10 @@ export default function AboutSection() {
         <div className="grid gap-12 lg:grid-cols-[1.1fr_1fr]">
           <div data-build>
             <p className="eyebrow text-accent">02 / Behind the research</p>
-            <h2 className="mt-3 font-display text-5xl uppercase leading-[0.95] sm:text-7xl">
+            <h2 data-drift className="mt-3 font-display text-5xl uppercase leading-[0.95] sm:text-7xl">
               Not just accuracy.
               <br />
-              <span className="text-accent">Where it breaks.</span>
+              <span data-drift-line className="text-accent">Where it breaks.</span>
             </h2>
           </div>
           <p data-build className="self-end text-[15px] leading-8 text-bone/75">

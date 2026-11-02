@@ -4,6 +4,7 @@ import '@fontsource-variable/manrope';
 import '@fontsource/caveat/600.css';
 import '@/styles/globals.css';
 import { getSiteConfig } from '@/lib/content';
+import MotionFx from '@/components/MotionFx';
 
 const siteConfig = getSiteConfig();
 
@@ -90,6 +91,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans bg-ink text-bone overflow-x-hidden">
+        <MotionFx />
         {children}
       </body>
     </html>

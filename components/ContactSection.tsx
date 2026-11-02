@@ -17,10 +17,10 @@ export default function ContactSection() {
         <div>
           <div data-build>
             <p className="eyebrow text-accent">04 / Get in touch</p>
-            <h2 className="mt-3 font-display text-6xl uppercase leading-[0.9] sm:text-8xl">
+            <h2 data-drift className="mt-3 font-display text-6xl uppercase leading-[0.9] sm:text-8xl">
               Let&apos;s build
               <br />
-              <span className="text-accent">together.</span>
+              <span data-drift-line className="text-accent">together.</span>
             </h2>
             <p className="mt-6 max-w-md text-[15px] leading-7 text-bone/70">
               Research collaborations, internships, or a model that needs a hard look. Send me a note.
@@ -28,6 +28,7 @@ export default function ContactSection() {
           </div>
           <a
             data-build
+            data-magnetic
             href={`mailto:${site.email}`}
             className="mt-8 inline-flex items-center gap-6 bg-accent px-6 py-4 text-sm font-bold uppercase tracking-wider text-white transition-colors hover:bg-accent-bright"
           >

@@ -34,7 +34,7 @@ export default function Hero() {
             aria-hidden="true"
             className="pointer-events-none absolute inset-x-0 top-[6%] z-0 select-none lg:top-[13%]"
           >
-            <div className="hero-word text-center font-display text-[24vw] uppercase lg:text-[22vw] xl:text-[19.5rem]">
+            <div data-depth="-0.7" data-scroll="0.32" className="hero-word text-center font-display text-[24vw] uppercase will-change-transform lg:text-[22vw] xl:text-[19.5rem]">
               Portfolio
             </div>
           </div>
@@ -44,13 +44,16 @@ export default function Hero() {
               data-build
               className="absolute inset-x-0 bottom-0 z-10 mx-auto w-[96vw] max-w-[520px] sm:w-[64vw] lg:w-[38vw] lg:max-w-[560px]"
             >
+              <div aria-hidden="true" data-depth="0.3" data-scroll="0.18" className="hero-glow absolute -inset-x-[12%] -top-[6%] bottom-[10%] -z-10" />
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
+                data-depth="0.55"
+                data-scroll="0.1"
                 src={site.portrait}
                 alt={site.name}
                 width={828}
                 height={956}
-                className="portrait-tint block h-auto w-full"
+                className="portrait-tint block h-auto w-full will-change-transform"
               />
             </div>
           )}
@@ -67,7 +70,7 @@ export default function Hero() {
           <p data-build className="mt-6 text-2xl font-extrabold uppercase leading-tight text-accent sm:text-[28px]">
             Multimodal ML &amp;
             <br />
-            Reliable AI
+            <span data-rotate='["Reliable AI","Emotion AI","Evaluation","Grounded RAG"]'>Reliable AI</span>
           </p>
           <p data-build className="mt-5 max-w-[300px] text-[15px] leading-7 text-bone/75">
             I study where multimodal models go wrong and build the pipelines that measure it. Before research, I
@@ -75,6 +78,7 @@ export default function Hero() {
           </p>
           <a
             data-build
+            data-magnetic
             href="#work"
             className="mt-8 inline-flex items-center gap-6 bg-accent px-5 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-accent-bright"
           >
@@ -99,7 +103,7 @@ export default function Hero() {
           {STATS.map((s) => (
             <div data-build key={s.label} className="flex items-center gap-6 border-b border-line py-3.5">
               <div className="w-[88px] font-display text-[44px] leading-none text-accent">
-                {s.value}
+                <span data-count={s.value}>{s.value}</span>
                 {s.suffix && <span className="ml-0.5 text-lg">{s.suffix}</span>}
               </div>
               <div className="eyebrow max-w-[140px] text-[10px] font-semibold leading-4 text-dim">

@@ -30,7 +30,7 @@ function Cover({ p, index }: { p: (typeof projects)[number]; index: number }) {
   const seed = index * 37;
   const bars = Array.from({ length: 22 }, (_, i) => 18 + ((Math.sin(seed + i * 1.7) + 1) / 2) * 62);
   return (
-    <div className="relative aspect-[16/10] overflow-hidden bg-panel">
+    <div data-tilt className="tilt relative aspect-[16/10] overflow-hidden bg-panel">
       <div
         className="absolute inset-0 opacity-60"
         style={{
@@ -39,16 +39,22 @@ function Cover({ p, index }: { p: (typeof projects)[number]; index: number }) {
           backgroundSize: '28px 28px',
         }}
       />
-      <div className="absolute inset-x-5 bottom-5 flex h-[42%] items-end gap-[3px] opacity-60 transition-opacity duration-500 group-hover:opacity-100">
+      <div data-bars className="absolute inset-x-5 bottom-5 flex h-[42%] items-end gap-[3px] opacity-60 transition-opacity duration-500 group-hover:opacity-100">
         {bars.map((h, i) => (
           <div
             key={i}
-            className="flex-1 origin-bottom bg-gradient-to-t from-accent-deep to-accent/70 transition-transform duration-700 ease-out-expo group-hover:scale-y-110"
+            className="cover-bar flex-1 origin-bottom transition-transform duration-700 ease-out-expo group-hover:scale-y-110"
             style={{ height: `${h}%`, transitionDelay: `${i * 12}ms` }}
-          />
+          >
+            <div
+              className="bar-wave h-full w-full bg-gradient-to-t from-accent-deep to-accent/70"
+              style={{ animationDelay: `${(-i * 0.17).toFixed(2)}s` }}
+            />
+          </div>
         ))}
       </div>
       <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/20 to-transparent" />
+      <div className="spotlight" aria-hidden="true" />
       <div className="relative flex h-full flex-col items-start p-4 sm:p-5">
         <span className="bg-ink/80 px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-bone/80">
           {categoryOf(p)}
@@ -79,7 +85,7 @@ export default function WorkSection() {
       <div className="flex flex-wrap items-end justify-between gap-6">
         <div data-build>
           <p className="eyebrow text-accent">01 / Selected work</p>
-          <h2 className="mt-2 font-display text-5xl uppercase leading-none sm:text-6xl">
+          <h2 data-drift className="mt-2 font-display text-5xl uppercase leading-none sm:text-6xl">
             Research and builds<span className="text-accent">.</span>
           </h2>
         </div>

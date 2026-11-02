@@ -92,6 +92,7 @@ export default function Header() {
             Motion {motionOn ? 'on' : 'off'}
           </button>
           <a
+            data-magnetic
             href="#contact"
             className="hidden items-center gap-2 text-[14px] font-semibold text-bone sm:flex"
           >

@@ -120,7 +120,7 @@ export default function ExperienceSection() {
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div data-build>
             <p className="eyebrow text-accent">03 / The journey</p>
-            <h2 className="mt-3 font-display text-5xl uppercase leading-[0.95] sm:text-7xl">
+            <h2 data-drift className="mt-3 font-display text-5xl uppercase leading-[0.95] sm:text-7xl">
               Ship it<span className="text-accent">.</span> Then measure it<span className="text-accent">.</span>
             </h2>
           </div>

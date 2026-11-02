@@ -39,6 +39,7 @@ export default function CursorBuild() {
       if (built.has(el)) return;
       built.add(el);
       el.classList.add('is-built');
+      el.dispatchEvent(new CustomEvent('built', { bubbles: true }));
       if (animate && !root.classList.contains('motion-off')) {
         el.animate(
           [

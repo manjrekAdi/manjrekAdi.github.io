@@ -218,3 +218,83 @@ html.cb-armed [data-build]:not(.is-built) {
 .cb-skip:hover {
   border-color: var(--accent);
 }
+
+/* ===================== Motion layer ===================== */
+
+html.lenis {
+  scroll-behavior: auto;
+}
+
+/* Hero: soft light behind the portrait that slowly breathes */
+.hero-glow {
+  background: radial-gradient(closest-side, rgba(208, 100, 58, 0.34), rgba(208, 100, 58, 0.1) 55%, transparent 75%);
+  animation: glow-breathe 7s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes glow-breathe {
+  0%, 100% { opacity: 0.65; scale: 0.96; }
+  50% { opacity: 1; scale: 1.04; }
+}
+
+/* Project covers: bars ripple left to right while on screen */
+.bar-wave {
+  transform-origin: bottom;
+  animation: bar-wave 3.4s ease-in-out infinite;
+  animation-play-state: paused;
+}
+.is-live .bar-wave {
+  animation-play-state: running;
+}
+@keyframes bar-wave {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.74); }
+}
+
+/* Project covers: tilt and a light that follows the cursor */
+.tilt {
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+.tilt.is-tilting {
+  transition-duration: 0.15s;
+}
+.spotlight {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(229, 128, 79, 0.24), transparent 65%);
+}
+.tilt.is-tilting .spotlight {
+  opacity: 1;
+}
+
+/* Buttons that lean toward the cursor */
+[data-magnetic] {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+[data-magnetic].is-pulling {
+  transition-duration: 0.18s, 0.2s, 0.2s, 0.2s;
+}
+[data-magnetic] svg {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Headings that shear apart while scrolling past */
+[data-drift],
+[data-drift-line] {
+  will-change: transform;
+}
+[data-drift-line] {
+  display: inline-block;
+}
+
+[data-count] {
+  font-variant-numeric: tabular-nums;
+}
+
+html.motion-off .hero-glow,
+html.motion-off .bar-wave {
+  animation: none;
+}
