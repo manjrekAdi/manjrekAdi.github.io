@@ -177,35 +177,6 @@
     "featured": true
   },
   {
-    "slug": "connect2talents-infrastructure",
-    "title": "Connect2Talents Infrastructure",
-    "shortDescription": "AWS setup for SGMC Canada's talent platform through Riipen: domains, authenticated email, storage, and access control.",
-    "longDescription": "Infrastructure work for the Connect2Talents platform, done with SGMC Canada through Riipen alongside two teammates.",
-    "challenge": "The platform needed a domain, email that lands in inboxes rather than spam, file storage, and sensible permissions.",
-    "solution": "Configured Route 53 for connect2talents.ca, SES with DKIM and DMARC, S3 storage, and IAM roles and policies.",
-    "outcome": "Domain, email, storage, and access in place for the platform build.",
-    "coverImage": "/grid.svg",
-    "images": [],
-    "tags": [
-      "Cloud"
-    ],
-    "tech": [
-      "AWS",
-      "Route 53",
-      "SES",
-      "S3",
-      "IAM"
-    ],
-    "role": "Developer, SGMC Canada via Riipen",
-    "timeline": "2026",
-    "metrics": [],
-    "headline": "AWS",
-    "headlineLabel": "Route 53 · SES · S3 · IAM",
-    "repo": "",
-    "demo": "",
-    "featured": false
-  },
-  {
     "slug": "wikipedia-bridge-articles",
     "title": "Bridge Articles in Wikipedia",
     "shortDescription": "Finding the articles that connect otherwise separate communities in the Wikipedia knowledge graph.",

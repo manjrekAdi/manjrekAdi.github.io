@@ -13,8 +13,6 @@ const ORGS = [
   'York University',
   'Lassonde',
   'NSERC USRA',
-  'SGMC Canada',
-  'Riipen',
   'Checklick',
   'Draw Dream',
   'Ededge Groups',

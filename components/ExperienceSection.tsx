@@ -32,16 +32,6 @@ const experiences = [
     skills: ['Bash', 'GitHub Actions', 'LangGraph', 'CyberArk'],
   },
   {
-    title: 'Developer, Connect2Talents platform (via Riipen)',
-    company: 'SGMC Canada',
-    period: '2026',
-    location: 'Remote',
-    description: [
-      'Set up the AWS foundation: Route 53 domains, SES email with DKIM and DMARC, S3 storage, and IAM access control.',
-    ],
-    skills: ['AWS', 'Route 53', 'SES', 'IAM'],
-  },
-  {
     title: 'Software Developer (Freelance)',
     company: 'Checklick',
     period: 'Apr 2025 – Aug 2025',
