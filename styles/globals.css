@@ -7,8 +7,8 @@
   --font-manrope: 'Manrope Variable';
   --font-caveat: 'Caveat';
   --ink: #090909;
-  --accent: #1fa2ff;
-  --accent-deep: #0a4f8a;
+  --accent: #d0643a;
+  --accent-deep: #6e2a10;
   --line: rgba(255, 255, 255, 0.08);
 }
 
@@ -31,12 +31,12 @@ body {
 
 ::selection {
   background: var(--accent);
-  color: #090909;
+  color: #fff;
 }
 
 /* Giant PORTFOLIO word behind the hero */
 .hero-word {
-  background: linear-gradient(180deg, #1fa2ff 0%, #1484d6 40%, rgba(8, 60, 110, 0.55) 75%, rgba(9, 9, 9, 0) 100%);
+  background: linear-gradient(180deg, #d0643a 0%, #a8471f 40%, rgba(90, 32, 10, 0.55) 75%, rgba(9, 9, 9, 0) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -124,7 +124,7 @@ html.cb-armed [data-build]:not(.is-built) {
   color: var(--accent);
 }
 .cb-cursor.is-dim {
-  color: #9ad8ff;
+  color: #f0a07a;
 }
 
 .cb-tag {
@@ -137,7 +137,7 @@ html.cb-armed [data-build]:not(.is-built) {
   padding: 4px 6px;
   border-radius: 2px;
   background: var(--accent);
-  color: #090909;
+  color: #fff;
 }
 .cb-cursor.is-accent .cb-tag {
   background: #fff;
@@ -152,8 +152,8 @@ html.cb-armed [data-build]:not(.is-built) {
   position: absolute;
   top: 0;
   left: 0;
-  border: 1px dashed rgba(31, 162, 255, 0.9);
-  background: rgba(31, 162, 255, 0.07);
+  border: 1px dashed rgba(208, 100, 58, 0.9);
+  background: rgba(208, 100, 58, 0.07);
 }
 .cb-box::before,
 .cb-box::after {

@@ -14,9 +14,9 @@ module.exports = {
         bone: '#ededed',
         dim: '#8a8a8a',
         accent: {
-          DEFAULT: '#1fa2ff',
-          bright: '#5cc0ff',
-          deep: '#0a4f8a',
+          DEFAULT: '#d0643a',
+          bright: '#e5804f',
+          deep: '#6e2a10',
         },
       },
       fontFamily: {

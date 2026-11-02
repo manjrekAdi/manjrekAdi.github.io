@@ -26,7 +26,7 @@ function Ladder({ tuned }: { tuned: boolean }) {
   const font = 'var(--font-manrope), sans-serif';
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="block h-full w-full" aria-hidden="true">
-      <rect width={W} height={H} fill={tuned ? '#04111c' : '#0f0f0f'} />
+      <rect width={W} height={H} fill={tuned ? '#170905' : '#0f0f0f'} />
       {[0.3, 0.35, 0.4, 0.45].map((t) => (
         <g key={t}>
           <line x1={x(t)} x2={x(t)} y1={top - 10} y2={H - 50} stroke="rgba(255,255,255,0.06)" />
@@ -45,7 +45,7 @@ function Ladder({ tuned }: { tuned: boolean }) {
             <text x={24} y={y + h / 2 + 5} fill={tuned ? '#ededed' : '#8a8a8a'} fontSize="16" fontFamily={font} fontWeight="700">
               {st.label}
             </text>
-            <rect x={x(lo)} y={y} width={x(v) - x(lo)} height={h} fill={tuned ? '#1fa2ff' : '#3a3a3a'} opacity={tuned ? 0.85 : 1} />
+            <rect x={x(lo)} y={y} width={x(v) - x(lo)} height={h} fill={tuned ? '#d0643a' : '#3a3a3a'} opacity={tuned ? 0.85 : 1} />
             <text x={x(v) + 10} y={y + h / 2 + 6} fill={tuned ? '#ffffff' : '#8a8a8a'} fontSize="17" fontFamily={font} fontWeight="800">
               {v.toFixed(3)}
             </text>
@@ -123,7 +123,7 @@ export default function ProcessSection() {
             <span className="absolute left-3 top-3 bg-ink/80 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-dim">
               Naive fusion
             </span>
-            <span className="absolute right-3 top-3 bg-accent px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-ink">
+            <span className="absolute right-3 top-3 bg-accent px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
               Gated + calibrated
             </span>
             <div className="absolute inset-y-0 w-px bg-white" style={{ left: `${pos}%` }}>
