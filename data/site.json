@@ -9,12 +9,21 @@
   "email": "manjrekadi05@gmail.com",
   "timezone": "America/Toronto",
   "siteUrl": "https://manjrekadi.github.io",
-  "portrait": "",
+  "portrait": "/images/portrait.webp",
   "resume": "",
   "status": "MSc research at York",
   "statusShort": "MSc @ York",
-  "heroTaglines": ["Multimodal ML", "Reliable AI", "Research"],
-  "badges": ["PyTorch", "Python", "RAG", "Evaluation"],
+  "heroTaglines": [
+    "Multimodal ML",
+    "Reliable AI",
+    "Research"
+  ],
+  "badges": [
+    "PyTorch",
+    "Python",
+    "RAG",
+    "Evaluation"
+  ],
   "social": {
     "github": "https://github.com/manjrekAdi",
     "githubHandle": "@manjrekAdi",
@@ -28,8 +37,20 @@
     "accentColor": "#5cc0ff"
   },
   "stats": [
-    { "value": "7", "suffix": "", "label": "LLMs benchmarked, 0.5B to 14B" },
-    { "value": "8.7", "suffix": "K", "label": "Clips evaluated zero-shot" },
-    { "value": "8", "suffix": "mo", "label": "Production engineering, TD Bank" }
+    {
+      "value": "7",
+      "suffix": "",
+      "label": "LLMs benchmarked, 0.5B to 14B"
+    },
+    {
+      "value": "8.7",
+      "suffix": "K",
+      "label": "Clips evaluated zero-shot"
+    },
+    {
+      "value": "8",
+      "suffix": "mo",
+      "label": "Production engineering, TD Bank"
+    }
   ]
 }

@@ -42,14 +42,14 @@ export default function Hero() {
           {site.portrait && (
             <div
               data-build
-              className="absolute -left-[20vw] -right-[20vw] bottom-0 z-10 mx-auto sm:inset-x-0 sm:w-[78vw] sm:max-w-[680px] lg:w-[46vw]"
+              className="absolute inset-x-0 bottom-0 z-10 mx-auto w-[96vw] max-w-[520px] sm:w-[64vw] lg:w-[42vw] lg:max-w-[620px]"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={site.portrait}
                 alt={site.name}
-                width={796}
-                height={577}
+                width={966}
+                height={948}
                 className="portrait-tint block h-auto w-full"
               />
             </div>
